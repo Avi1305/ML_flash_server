@@ -70,7 +70,9 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
+        print("Debug: No image found in request")
         return jsonify({'error': 'No image provided'}), 400
+
     
     file = request.files['image']
     filename = file.filename
