@@ -21,13 +21,14 @@ db = client["eyeDiseaseDB"]  # Use your MongoDB database
 collection = db["predictions"]  # Create/Use the predictions collection
 
 # Load class labels from saved file
-with open("class_labels.json", "r") as f:
+json_path = os.path.join(os.getcwd(), "ml_model", "class_labels.json")
+with open(json_path, "r") as f:
     class_labels = json.load(f)
 
 
 import os
 
-model_path = os.path.join(os.getcwd(), "model.h5")
+model_path = os.path.join(os.getcwd(),"ml_model", "model.h5")
 model = load_model(model_path)
 
 
