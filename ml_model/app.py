@@ -168,10 +168,7 @@ def register():
 
     return jsonify({"message": "User registered successfully"}), 201
 
-if __name__ == '__main__':
-        app.run(port=5000)  # Start Flask API on port 5001
-
-        print(app.url_map)  # Print URL map for debugging
-
-
-# print("available routes:",app.url_map)  # Print URL map for debugging
+if __name__ == "__main__":
+    PORT = int(os.getenv("PORT", 5000))  # Render assigns PORT dynamically
+    app.run(host="0.0.0.0", port=PORT)
+  # Start Flask API on port 5001
