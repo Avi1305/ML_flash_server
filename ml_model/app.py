@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for the entire app
 
 # Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb+srv://admin123:EyeDisease123@cluster0.0dmadoo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["eyeDiseaseDB"]  # Use your MongoDB database
 collection = db["predictions"]  # Create/Use the predictions collection
 
@@ -25,17 +25,16 @@ with open("class_labels.json", "r") as f:
     class_labels = json.load(f)
 
 
-model = load_model('model.h5')  # Load your trained ML model
+import os
+
+model_path = os.path.join(os.getcwd(), "model.h5")
+model = load_model(model_path)
 
 
-test_img_path = "uploads/image1.jpeg"  # Replace with an actual image path
-img = Image.open(test_img_path).resize((150, 150))
-img_array = np.array(img).astype('float32') / 255.0
-img_array = img_array.reshape(1, 150, 150, 3)
 
-prediction = model.predict(img_array)
-print("Raw Model Output:", prediction)  # Check the output
-print("Predicted Class:", np.argmax(prediction, axis=1))
+
+
+
 
 print("Model input shape:", model.inputs)
 
@@ -169,9 +168,9 @@ def register():
     return jsonify({"message": "User registered successfully"}), 201
 
 if __name__ == '__main__':
-    app.run(port=5001)  # Start Flask API on port 5001
+        app.run(port=5000)  # Start Flask API on port 5001
 
-    print(app.url_map)  # Print URL map for debugging
+        print(app.url_map)  # Print URL map for debugging
 
 
 # print("available routes:",app.url_map)  # Print URL map for debugging
