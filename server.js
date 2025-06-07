@@ -1,3 +1,4 @@
+const MONGO_URL = "mongodb+srv://admin123:EyeDisease123@cluster0.0dmadoo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -7,11 +8,16 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/eyeDiseaseDB', {
-    useNewUrlParser: true,
+
+
+
+
+
+mongoose.connect(MONGO_URL, {
+  useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('Connected to MongoDB'))
+.then(() => console.log('Connected to MongoDB Atlas'))
 .catch((err) => console.error('MongoDB connection error:', err));
 
 app.get('/', (req, res) => {
