@@ -1,8 +1,7 @@
-Flask
-tensorflow
-keras
-numpy
-pillow
+fastapi
+uvicorn
 pymongo
-flask-cors
-gunicorn  # Required for Render deployment
+pillow
+numpy
+tensorflow
+python-multipart
