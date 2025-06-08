@@ -31,7 +31,8 @@ with open("ml_model/class_labels.json", "r") as f:
 
 
 # Load ML model
-model = load_model("model.h5")
+model = load_model("ml_model/model.h5")
+
 
 # Setup Upload Folder
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.getcwd(), "uploads"))
