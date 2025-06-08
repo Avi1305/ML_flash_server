@@ -26,8 +26,9 @@ db = client["eyeDiseaseDB"]
 collection = db["predictions"]
 
 # Load class labels
-with open("class_labels.json", "r") as f:
+with open("ml_model/class_labels.json", "r") as f:
     class_labels = json.load(f)
+
 
 # Load ML model
 model = load_model("model.h5")
