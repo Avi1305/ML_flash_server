@@ -54,25 +54,26 @@ async def login(email: str = Form(...), password: str = Form(...)):
     
     return {"message": "Login successful", "user": {"name": user["name"], "email": user["email"]}}
 
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from io import BytesIO
+
 @app.post("/predict")
 async def predict(image: UploadFile = File(...)):
     try:
-        file_path = os.path.join(UPLOAD_FOLDER, image.filename)
-        with open(file_path, "wb") as buffer:
-            buffer.write(await image.read())  # Save uploaded image
+        contents = await image.read()
+        img = Image.open(BytesIO(contents)).convert("RGB").resize((224, 224))
 
-        img = Image.open(file_path).resize((150, 150))
-        img_array = np.array(img).astype("float32") / 255.0
-        img_array = img_array.reshape(1, 150, 150, 3)
+        img_array = np.array(img).astype("float32")
+        img_array = preprocess_input(img_array)
+        img_array = img_array.reshape(1, 224, 224, 3)
 
         prediction = model.predict(img_array)
         result = np.argmax(prediction, axis=1)[0]
         predicted_label = class_labels.get(str(result), "Unknown")
 
-        # Store prediction in MongoDB
+        # Optional: Save to DB without saving file on disk
         collection.insert_one({
             "filename": image.filename,
-            "file_path": file_path,
             "result": int(result),
             "disease": predicted_label,
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -80,13 +81,14 @@ async def predict(image: UploadFile = File(...)):
 
         return {
             "message": "Prediction successful!",
-            "filePath": f"/uploads/{image.filename}",
+            "fileName": image.filename,
             "result": int(result),
             "disease": predicted_label
         }
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/results")
 async def get_results():
